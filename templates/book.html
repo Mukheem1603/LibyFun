@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibyFun</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Hello {{user}}, Welcome to LibyFun!!!</h1>    
+          <h6>LibyFun is a website for all the book lovers out there.</h6>
+        </div>
+        <p>
+          <a href="{{url_for('login')}}"><button class="btn btn-primary">Home</button></a> | <a href="{{url_for('logout')}}"><button class="btn btn-danger">Logout</button></a>
+        </p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          
+          {% for message in messages %}
+            <p>{{ message }}<p>
+          {% endfor %}
+          
+        {% endif %}
+      {% endwith %}
+
+        <h2>The Reviews' place</h2>
+        <p>_________</p>
+
+        {% for book in books %}
+        <div class="card border-dark mb-4" style="width: 18rem;">
+          
+            <div class="card-body">
+              <h5 class="card-title">{{book['title']}}</h5>
+              <p class="card-text">
+                 <ul>
+                     <li>Author:{{book['author']}}</li>
+                     <li>ISBN:{{book['isbn']}}</li>
+                     <li>Year:{{book['year']}}</li>
+                     <li>Goodreads average rating:{{ar}}</li>
+                     <li>Goodreads reviews count:{{count}}</li>
+                 </ul>  
+              </p>
+              
+            </div>
+          </div>
+          {% endfor %}
+
+
+{% if display %}
+        <form action="{{url_for('bookpage',isbn=isbn)}}" method="POST">
+            <div class="form-group">
+                <div class="form-group col-md-4">
+                    <label for="inputState">Rating⭐</label>
+                    <select id="inputState" class="form-control" name="rating" required>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Write your review ✒</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" aria-describedby="Help" rows="2" placeholder="Write your review here..." name="review" required></textarea>
+              </div>
+            </div> 
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+{% endif %}
+{% if not display %}
+<h3>You have already submitted a review for this book</h3>
+{% endif %}
+
+<br>
+          {% if reviews %}
+          {% for review in reviews %}
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{review['userrev']}}</h5>
+                  <p class="card-text">{{review['review']}}</p>
+                  <p class="card-text"><small class="text-muted">{{review['time']}} UTC</small></p>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endfor %}
+           {% endif %}
+           
+              
+          
+      </div>
+    
+</body>
+</html>
