@@ -138,7 +138,7 @@ def bookpage(isbn):
             display = True
         books = db.execute("SELECT * from books WHERE isbn = :i",{"i":isbn}).fetchall()
         reviews = db.execute("SELECT * from bookreviews WHERE isbn=:i",{"i":isbn}).fetchall()
-        return render_template("book.html",books=books,ar=average_rating,count=reviews_count,reviews=reviews,display=display,isbn=isbn)
+        return render_template("book.html",books=books,ar=average_rating,count=reviews_count,reviews=reviews,display=display,isbn=isbn,user=u)
     else :
         r4 =make_response(redirect(url_for('login')))
         r4.set_cookie('error','Incorrect isbn 😓',max_age=10) 
